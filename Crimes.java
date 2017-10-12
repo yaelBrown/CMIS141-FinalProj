@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Crimes {
@@ -19,12 +20,32 @@ public class Crimes {
 	static Scanner scannerIn = null;
     static FileInputStream in = null;   
     static BufferedReader inputStream = null;
+    static String fileLocation = "Crimes.csv";
     
     // Define variables
     static boolean check = false; // Used for while loop to keep reiterating try code. 
     static Scanner choice = new Scanner(System.in);
     static String selection = null;
-
+    static String crimesArray[][];
+    static String inArray[]; // temporary array to hold data
+    // Setup CSV Array
+    public static void setUpCSVArray() {
+    	int row = 0;
+    	int col = 0;
+    	String inputLine = "";
+    	scannerIn = new Scanner(new BufferedReader(new FileReader(fileLocation)));
+    	// Use while loop to add information to array
+    	while (scannerIn.hasNextLine()) {
+    		inputLine = scannerIn.nextLine();
+    		String inArray[] = inputLine.split(",");
+    		// copy contents of inArray to the crimesArray
+    		for (int x = 0; x < inArray.length; x++) {
+    			crimesArray[row][x] = inArray[x];
+    		}
+    		row++;
+    	}
+    }
+    
     // Method for reading Crime.csv file
     public static void readFile() throws IOException {
     	int fileChar;
@@ -99,6 +120,7 @@ public class Crimes {
     
     public static void main(String[] args) throws IOException {
   	   	try {
+  	   		setUpCSVArray(); // Setup Array for data manipulation
             menu();
             } catch (Exception e) {
                 System.out.println("There was an exception, trying again");
